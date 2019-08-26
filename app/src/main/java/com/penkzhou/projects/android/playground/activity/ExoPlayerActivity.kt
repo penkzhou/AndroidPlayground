@@ -169,7 +169,7 @@ class ExoPlayerActivity : AppCompatActivity() {
 
             }
         })
-        player!!.prepare(dashMediaSource)
+        player!!.prepare(hlsMediaSource)
     }
 
     override fun onPause() {
@@ -179,7 +179,7 @@ class ExoPlayerActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val HLS_URL = "https://mnmedias.api.telequebec.tv/m3u8/29880.m3u8"
+        private val HLS_URL = "https://bili.meijuzuida.com/20190202/1862_22c36873/800k/hls/index.m3u8"
         private val DASH_URL = "http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"
         private val NORMAL_MEDIA_URL = "https://storage.coverr.co/videos/coverr-man-communicating-by-phone-1565704013660?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHBJZCI6IjExNDMyN0NEOTRCMUFCMTFERTE3IiwiaWF0IjoxNTY2MTk4NjY5LCJleHAiOjE1NjYyMDIyNjl9.BgvhMzACGBtiJj8UhAHhWyI6wz2kIYc3wARCoTLId1I"
         private val TAG = "exoplayer_demo"
