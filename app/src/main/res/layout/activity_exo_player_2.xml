@@ -12,6 +12,7 @@
         android:background="#000000"
         app:controller_layout_id="@layout/custom_play_control"
         app:show_buffering="always"
+        app:resize_mode="fixed_width"
         app:layout_constraintDimensionRatio="4:3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
