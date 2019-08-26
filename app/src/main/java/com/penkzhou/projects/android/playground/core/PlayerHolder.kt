@@ -1,9 +1,11 @@
-package com.penkzhou.projects.android.playground.activity
+package com.penkzhou.projects.android.playground.core
 
 import android.content.Context
 import android.net.Uri
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.analytics.AnalyticsListener
+import com.google.android.exoplayer2.ext.okhttp.OkHttpDataSourceFactory
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -13,26 +15,30 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray
 import com.google.android.exoplayer2.ui.PlayerView
+import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.video.VideoListener
+import okhttp3.OkHttpClient
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
 import org.jetbrains.anko.info
 import java.util.*
 
 enum class SourceType {
-    local_video, local_audio, http_audio, http_video, playlist, http_hls_video, http_dash_video
+    LOCAL_VIDEO, LOCAL_AUDIO, HTTP_AUDIO, HTTP_VIDEO, PLAYLIST, HTTP_HLS_VIDEO, HTTP_DASH_VIDEO
 }
 
 data class PlayerState(var window: Int = 0,
                        var position: Long = 0,
                        var whenReady: Boolean = true,
-                       var source: SourceType = SourceType.local_audio)
+                       var source: SourceType = SourceType.LOCAL_AUDIO)
 
-class PlayerHolder(val context: Context,
-                   val playerView: PlayerView,
-                   val playerState: PlayerState) : AnkoLogger, Player.EventListener, VideoListener, AnalyticsListener {
-    val player: ExoPlayer
+class PlayerHolder(context: Context,
+                   private val playerView: PlayerView,
+                   private val playerState: PlayerState) : AnkoLogger, Player.EventListener, VideoListener, AnalyticsListener {
+    private val player: ExoPlayer
+    private val factory: DataSource.Factory
+    private val localFactory: DataSource.Factory
 
     init {
         player = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector(), DefaultLoadControl())
@@ -43,53 +49,59 @@ class PlayerHolder(val context: Context,
                     it.addAnalyticsListener(PlayerHolder@ this)
                     info { "Simple Player created." }
                 }
+        val okHttpClient = OkHttpClient.Builder()
+                .addNetworkInterceptor(StethoInterceptor())
+                .build()
+        factory = OkHttpDataSourceFactory(okHttpClient, "playground-app_network")
+        localFactory = DefaultDataSourceFactory(context, "playground-app_local")
     }
 
+
     val mediaMap = mapOf<SourceType, Uri>(
-            SourceType.local_audio to Uri.parse("asset:///music.mp3"),
-            SourceType.local_video to Uri.parse("asset:///video.mp4"),
-            SourceType.http_audio to Uri.parse("https://mr1.doubanio.com/c18b1421c9a31a4683187c00c5d48c40/0/fm/song/p2369960_128k.mp4"),
-            SourceType.http_video to Uri.parse("https://www.apple.com/105/media/us/apple-card/2019/c90ec3fe-63dc-4557-b1ea-50d7539c76bd/films/this-is/apple-card-this-is-tpl-cc-us-2019_1280x720h.mp4"),
-            SourceType.http_dash_video to Uri.parse("http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"),
-            SourceType.http_hls_video to Uri.parse("https://bili.meijuzuida.com/20190202/1862_22c36873/800k/hls/index.m3u8")
+            SourceType.LOCAL_AUDIO to Uri.parse("asset:///music.mp3"),
+            SourceType.LOCAL_VIDEO to Uri.parse("asset:///video.mp4"),
+            SourceType.HTTP_AUDIO to Uri.parse("https://mr1.doubanio.com/c18b1421c9a31a4683187c00c5d48c40/0/fm/song/p2369960_128k.mp4"),
+            SourceType.HTTP_VIDEO to Uri.parse("https://www.apple.com/105/media/us/apple-card/2019/c90ec3fe-63dc-4557-b1ea-50d7539c76bd/films/this-is/apple-card-this-is-tpl-cc-us-2019_1280x720h.mp4"),
+            SourceType.HTTP_DASH_VIDEO to Uri.parse("http://www.bok.net/dash/tears_of_steel/cleartext/stream.mpd"),
+            SourceType.HTTP_HLS_VIDEO to Uri.parse("https://bili.meijuzuida.com/20190202/1862_22c36873/800k/hls/index.m3u8")
 
 
     )
 
-    fun createExtractorMediaSource(sourceType: SourceType): MediaSource {
+    private fun createExtractorMediaSource(sourceType: SourceType): MediaSource {
         return when (sourceType) {
-            SourceType.local_audio -> {
-                return ProgressiveMediaSource.Factory(DefaultDataSourceFactory(context, "app")).createMediaSource(mediaMap.get(sourceType))
+            SourceType.LOCAL_AUDIO -> {
+                return ProgressiveMediaSource.Factory(localFactory).createMediaSource(mediaMap.get(sourceType))
             }
-            SourceType.local_video -> {
-                return ProgressiveMediaSource.Factory(DefaultDataSourceFactory(context, "app")).createMediaSource(mediaMap.get(sourceType))
+            SourceType.LOCAL_VIDEO -> {
+                return ProgressiveMediaSource.Factory(localFactory).createMediaSource(mediaMap.get(sourceType))
             }
-            SourceType.http_audio -> {
-                return ProgressiveMediaSource.Factory(DefaultDataSourceFactory(context, "app")).createMediaSource(mediaMap.get(sourceType))
+            SourceType.HTTP_AUDIO -> {
+                return ProgressiveMediaSource.Factory(factory).createMediaSource(mediaMap.get(sourceType))
             }
-            SourceType.http_video -> {
-                return ProgressiveMediaSource.Factory(DefaultDataSourceFactory(context, "app")).createMediaSource(mediaMap.get(sourceType))
+            SourceType.HTTP_VIDEO -> {
+                return ProgressiveMediaSource.Factory(factory).createMediaSource(mediaMap.get(sourceType))
             }
-            SourceType.http_dash_video -> {
-                return DashMediaSource.Factory(DefaultDataSourceFactory(context, "app")).createMediaSource(mediaMap.get(sourceType))
+            SourceType.HTTP_DASH_VIDEO -> {
+                return DashMediaSource.Factory(factory).createMediaSource(mediaMap.get(sourceType))
             }
-            SourceType.http_hls_video -> {
-                return HlsMediaSource.Factory(DefaultDataSourceFactory(context, "app")).createMediaSource(mediaMap.get(sourceType))
+            SourceType.HTTP_HLS_VIDEO -> {
+                return HlsMediaSource.Factory(factory).createMediaSource(mediaMap.get(sourceType))
             }
-            SourceType.playlist -> {
+            SourceType.PLAYLIST -> {
                 return ConcatenatingMediaSource(
-                        createExtractorMediaSource(SourceType.local_audio),
-                        createExtractorMediaSource(SourceType.local_video),
-                        createExtractorMediaSource(SourceType.http_audio),
-                        createExtractorMediaSource(SourceType.http_video),
-                        createExtractorMediaSource(SourceType.http_dash_video),
-                        createExtractorMediaSource(SourceType.http_hls_video))
+                        createExtractorMediaSource(SourceType.LOCAL_AUDIO),
+                        createExtractorMediaSource(SourceType.LOCAL_VIDEO),
+                        createExtractorMediaSource(SourceType.HTTP_AUDIO),
+                        createExtractorMediaSource(SourceType.HTTP_VIDEO),
+                        createExtractorMediaSource(SourceType.HTTP_DASH_VIDEO),
+                        createExtractorMediaSource(SourceType.HTTP_HLS_VIDEO))
             }
         }
     }
 
     fun start() {
-        player.prepare(createExtractorMediaSource(SourceType.playlist))
+        player.prepare(createExtractorMediaSource(SourceType.PLAYLIST))
         with(playerState) {
             player.playWhenReady = whenReady
             player.seekTo(window, position)

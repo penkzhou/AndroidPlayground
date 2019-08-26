@@ -3,6 +3,8 @@ package com.penkzhou.projects.android.playground.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.penkzhou.projects.android.playground.R
+import com.penkzhou.projects.android.playground.core.PlayerHolder
+import com.penkzhou.projects.android.playground.core.PlayerState
 import kotlinx.android.synthetic.main.activity_exo_player_2.*
 
 class ExoPlayer2Activity : AppCompatActivity() {
