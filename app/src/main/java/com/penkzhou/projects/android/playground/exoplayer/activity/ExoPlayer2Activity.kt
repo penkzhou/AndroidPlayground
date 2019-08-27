@@ -1,4 +1,4 @@
-package com.penkzhou.projects.android.playground.activity
+package com.penkzhou.projects.android.playground.exoplayer.activity
 
 import android.app.PictureInPictureParams
 import android.content.res.Configuration
@@ -13,8 +13,8 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.penkzhou.projects.android.playground.R
-import com.penkzhou.projects.android.playground.core.PlayerHolder
-import com.penkzhou.projects.android.playground.core.PlayerState
+import com.penkzhou.projects.android.playground.exoplayer.core.PlayerHolder
+import com.penkzhou.projects.android.playground.exoplayer.core.PlayerState
 import kotlinx.android.synthetic.main.activity_exo_player_2.*
 
 class ExoPlayer2Activity : AppCompatActivity() {

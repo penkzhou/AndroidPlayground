@@ -1,4 +1,4 @@
-package com.penkzhou.projects.android.playground.activity
+package com.penkzhou.projects.android.playground.exoplayer.activity
 
 import android.net.Uri
 import android.os.Bundle

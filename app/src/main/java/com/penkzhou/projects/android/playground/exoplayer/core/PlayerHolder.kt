@@ -1,4 +1,4 @@
-package com.penkzhou.projects.android.playground.core
+package com.penkzhou.projects.android.playground.exoplayer.core
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -29,7 +29,7 @@ import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.video.VideoListener
-import com.penkzhou.projects.android.playground.core.PlayerHolder.MediaCatalog.mediaMap
+import com.penkzhou.projects.android.playground.exoplayer.core.PlayerHolder.MediaCatalog.mediaMap
 import okhttp3.OkHttpClient
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.error
