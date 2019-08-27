@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.bumptech.glide.Glide
 import com.penkzhou.projects.android.playground.R
-import com.penkzhou.projects.android.playground.activity.ExoPlayer2Activity
-import com.penkzhou.projects.android.playground.activity.ExoPlayerActivity
+import com.penkzhou.projects.android.playground.exoplayer.activity.ExoPlayer2Activity
+import com.penkzhou.projects.android.playground.exoplayer.activity.ExoPlayerActivity
 import com.penkzhou.projects.android.playground.model.ItemModel
 
 class ToolsItemAdapter(private val itemModelList: List<ItemModel>?) : RecyclerView.Adapter<ToolsItemAdapter.ItemViewHolder>() {

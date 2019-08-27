@@ -1,4 +1,4 @@
-package com.penkzhou.projects.android.playground.activity
+package com.penkzhou.projects.android.playground
 
 import android.os.Bundle
 import android.widget.ImageView
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.bumptech.glide.Glide
-import com.penkzhou.projects.android.playground.R
 import com.penkzhou.projects.android.playground.adapter.ToolsItemAdapter
 import com.penkzhou.projects.android.playground.model.ItemModel
 import com.penkzhou.projects.android.playground.other.ToolItemDecoration
