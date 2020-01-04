@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val itemModelList = ArrayList<ItemModel>()
         itemModelList.add(ItemModel("ExoPlayer", "https://image.flaticon.com/icons/png/64/131/131258.png", "exoplayer"))
         itemModelList.add(ItemModel("GooglePlayer", "https://image.flaticon.com/icons/png/64/220/220596.png", "googleplayer"))
-        itemModelList.add(ItemModel("ExoPlayer", "https://image.flaticon.com/icons/png/64/131/131258.png", "other"))
+        itemModelList.add(ItemModel("崩溃测试", "https://image.flaticon.com/icons/png/64/131/131258.png", "crashtest"))
         itemModelList.add(ItemModel("ExoPlayer", "https://image.flaticon.com/icons/png/64/131/131258.png", "other"))
         itemModelList.add(ItemModel("ExoPlayer", "https://image.flaticon.com/icons/png/64/131/131258.png", "other"))
         itemModelList.add(ItemModel("ExoPlayer", "https://image.flaticon.com/icons/png/64/131/131258.png", "other"))
