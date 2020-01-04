@@ -50,6 +50,8 @@ class ToolsItemAdapter(private val itemModelList: List<ItemModel>?) : RecyclerVi
                 } else if ("googleplayer" == itemModel.path) {
                     val intent = Intent(view.context, ExoPlayer2Activity::class.java)
                     view.context.startActivity(intent)
+                } else if ("crashtest" == itemModel.path) {
+                    throw NullPointerException()
                 } else {
                     Toast.makeText(itemView.context, itemModel.path, Toast.LENGTH_SHORT).show()
                 }
